@@ -1,4 +1,13 @@
 import scapy.all as scapy
+import argparse
+
+def get_arguments():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-t", "--target", dest="ipaddress", help="Specify IP range to be scanned")
+    options = parser.parse_args()
+    #if not options.ipaddress:
+        #parser.error("[-] Please specify an IP range, use --help for more info.")
+    return options.ipaddress
 
 def scan(ip):
     arp_request = scapy.ARP(pdst=ip)
@@ -17,8 +26,8 @@ def print_result(results_list):
         print(client["ip"] + "\t\t" + client["mac"])
 
     
-
-scan_result = scan("192.168.1.11/24") 
+ip_range = get_arguments()
+scan_result = scan(ip_range) 
 print_result(scan_result)
 
 ### Helpful code:
